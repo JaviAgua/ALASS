@@ -1,0 +1,223 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ALASS questionnaire</title>
+<meta name="description" content="Assessment of Language in Adults using Self-reported Skills (ALASS): a free 31-item self-report questionnaire, scored in your browser. Nothing is stored or sent.">
+<style>
+:root {
+  --bg: #fbfaf8; --surface: #ffffff; --text: #1d1d1b; --muted: #5c5a55; --line: #dcd8d0;
+  --accent: #2f5d8a; --accent-soft: #e6eef6; --warn-bg: #fff7e0; --warn-line: #e8c96a;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #171716; --surface: #222220; --text: #ecebe7; --muted: #a9a69f; --line: #3a3936;
+    --accent: #8db7e0; --accent-soft: #233243; --warn-bg: #2f2a1a; --warn-line: #7a6730;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #171716; --surface: #222220; --text: #ecebe7; --muted: #a9a69f; --line: #3a3936;
+  --accent: #8db7e0; --accent-soft: #233243; --warn-bg: #2f2a1a; --warn-line: #7a6730;
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--text);
+  font: 16px/1.5 system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif; }
+main { max-width: 760px; margin: 0 auto; padding: 24px 16px 64px; }
+h1 { font-size: 1.6rem; line-height: 1.25; margin: 0 0 4px; }
+h2 { font-size: 1.2rem; margin: 32px 0 8px; }
+.sub { color: var(--muted); margin: 0 0 16px; }
+.note { background: var(--warn-bg); border: 1px solid var(--warn-line); border-radius: 8px; padding: 12px 14px; }
+.stem { background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 12px 14px; }
+.stem p { margin: 0 0 6px; } .stem p:last-child { margin: 0; }
+fieldset.item { border: 0; border-bottom: 1px solid var(--line); margin: 0; padding: 14px 0; }
+fieldset.item legend { padding: 0; font-weight: 600; margin-bottom: 8px; }
+.code { color: var(--muted); font-weight: 400; font-size: .85rem; margin-right: 6px; }
+.scale { display: grid; grid-template-columns: repeat(10, 1fr); gap: 4px; max-width: 520px; }
+.scale label { position: relative; }
+.scale input { position: absolute; opacity: 0; inset: 0; margin: 0; }
+.scale span { display: flex; align-items: center; justify-content: center; height: 38px;
+  border: 1px solid var(--line); border-radius: 6px; background: var(--surface); cursor: pointer; font-variant-numeric: tabular-nums; }
+.scale input:checked + span { background: var(--accent); border-color: var(--accent); color: var(--bg); font-weight: 700; }
+.scale input:focus-visible + span { outline: 3px solid var(--accent); outline-offset: 2px; }
+.ends { display: flex; justify-content: space-between; max-width: 520px; color: var(--muted); font-size: .8rem; margin-top: 4px; }
+.actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 24px; }
+button { font: inherit; padding: 10px 16px; border-radius: 6px; border: 1px solid var(--accent); cursor: pointer; }
+button.primary { background: var(--accent); color: var(--bg); }
+button.secondary { background: transparent; color: var(--accent); }
+#progress { color: var(--muted); margin-top: 12px; }
+#results { margin-top: 24px; background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 16px; }
+#results[hidden] { display: none; }
+table { width: 100%; border-collapse: collapse; }
+th, td { text-align: left; padding: 8px 6px; border-bottom: 1px solid var(--line); vertical-align: middle; }
+td.num { font-variant-numeric: tabular-nums; white-space: nowrap; }
+.bar { height: 10px; background: var(--accent-soft); border-radius: 5px; overflow: hidden; min-width: 80px; }
+.bar i { display: block; height: 100%; background: var(--accent); }
+.small { font-size: .85rem; color: var(--muted); }
+footer { margin-top: 40px; font-size: .85rem; color: var(--muted); }
+a { color: var(--accent); }
+@media (max-width: 420px) { .scale span { height: 34px; font-size: .9rem; } .bar { display: none; } }
+@media print { .actions, .note { display: none; } }
+</style>
+</head>
+<body>
+<main>
+  <h1>ALASS: Assessment of Language in Adults using Self-reported Skills</h1>
+  <p class="sub">Revised 31-item version · free to use under CC BY 4.0</p>
+
+  <div class="note" role="note">
+    <strong>Your answers stay on this device.</strong> Scores are calculated in your browser; nothing is saved or sent anywhere.
+    The ALASS is a research and screening questionnaire, <strong>not a diagnostic test</strong>. It has no clinical cut-off scores.
+    If you are concerned about your language, please speak to a speech and language therapist.
+  </div>
+
+  <form id="alass" novalidate>
+    <h2>Part A. Childhood (before age six)</h2>
+    <div class="stem">
+      <p>Do you recall having one of these difficulties as a child BEFORE BEING SIX YEARS OLD?</p>
+      <p>This might be something that your parents, relatives or teachers might have mentioned to you, or something that you just felt you struggled with.</p>
+      <p>Please rate the following items on a scale of 1 to 10, where 10 means 'I'm very good' and 1 means 'I'm not very good'.</p>
+    </div>
+    <div id="partA"></div>
+
+    <h2>Part B. Adulthood (now)</h2>
+    <div class="stem">
+      <p>Do you recall having one of these difficulties as AN ADULT (now)?</p>
+      <p>This might be something that your parents, relatives or teachers might have mentioned to you, or something that you just felt you struggled with.</p>
+      <p>Please rate the following items on a scale of 1 to 10, where 10 means 'I'm very good' and 1 means 'I'm not very good'.</p>
+    </div>
+    <div id="partB"></div>
+
+    <p id="progress" aria-live="polite"></p>
+    <div class="actions">
+      <button type="submit" class="primary">Calculate my scores</button>
+      <button type="button" class="secondary" id="download">Download my answers (CSV)</button>
+      <button type="reset" class="secondary">Clear all answers</button>
+    </div>
+  </form>
+
+  <section id="results" hidden aria-live="polite">
+    <h2 style="margin-top:0">Your scores</h2>
+    <table>
+      <thead><tr><th>Score</th><th>Mean (1–10)</th><th aria-hidden="true"></th><th>Items answered</th></tr></thead>
+      <tbody id="scoreRows"></tbody>
+    </table>
+    <p class="small">Each score is the mean of the items you answered; higher scores mean better self-reported skills.
+      For comparison only, a sample of 130 UK university students had means of CL 8.10, LP 8.56, SUL 7.39 and total 8.22.
+      These describe one student sample and are not norms or cut-offs.</p>
+  </section>
+
+  <footer>
+    <p><strong>Scoring key.</strong> Childhood Language (CL): A1–A13. Language Performance (LP): B1, B2, B4, B8–B18.
+      Social Use of Language (SUL): B3, B5, B6, B7. Total: all 31 items. No item is reverse-scored.</p>
+    <p><strong>How to cite.</strong> Joyce, H., &amp; Aguado-Orea, J. (2022). The divergent nature of language performance and social use of language:
+      An online scale for the Assessment of Language in Adults using Self-reported Skills (ALASS).
+      <i>International Journal of Developmental Science</i>, 16(1–2), 27–42.
+      <a href="https://doi.org/10.3233/DEV-210316">https://doi.org/10.3233/DEV-210316</a></p>
+    <p>Licence: <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>. You may copy, translate and adapt the ALASS with credit.</p>
+  </footer>
+</main>
+
+<script>
+const CL = ["Producing sounds (phonics)", "Producing single words", "Producing sentences", "Speaking with friends",
+  "Speaking with your teacher", "Reading out loud", "Spelling", "Blending sounds to make words, e.g. 'c-oa-t' makes 'coat'",
+  "Understanding what I have read", "Understanding English sounds (phonics)", "Understanding verbal instructions",
+  "Writing a sentence", "Writing a story"];
+const ADULT = [["Producing sentences", "LP"], ["Speaking with friends", "LP"], ["Speaking with your doctor", "SUL"],
+  ["Talking on the telephone with someone that you know well", "LP"],
+  ["Talking on the telephone with someone that you don't know well", "SUL"], ["Speaking in public", "SUL"],
+  ["Speaking within a group", "SUL"], ["Reading out loud", "LP"], ["Spelling", "LP"],
+  ["Understanding something that I have read", "LP"], ["Understanding English sounds (phonics)", "LP"],
+  ["Understanding the content of a lecture", "LP"], ["Understanding verbal instructions", "LP"],
+  ["Writing a long piece of text", "LP"], ["Writing a story", "LP"], ["Writing a letter or email", "LP"],
+  ["Writing an academic essay", "LP"], ["Taking notes in a lecture/meeting", "LP"]];
+
+const items = [
+  ...CL.map((text, i) => ({ code: "A" + (i + 1), text, scale: "CL" })),
+  ...ADULT.map(([text, scale], i) => ({ code: "B" + (i + 1), text, scale }))
+];
+
+function render(list, container) {
+  const host = document.getElementById(container);
+  for (const it of list) {
+    const fs = document.createElement("fieldset");
+    fs.className = "item";
+    const lg = document.createElement("legend");
+    const code = document.createElement("span");
+    code.className = "code"; code.textContent = it.code;
+    lg.append(code, document.createTextNode(it.text));
+    const scale = document.createElement("div");
+    scale.className = "scale";
+    for (let v = 1; v <= 10; v++) {
+      const lab = document.createElement("label");
+      const inp = document.createElement("input");
+      inp.type = "radio"; inp.name = it.code; inp.value = v;
+      inp.setAttribute("aria-label", it.text + ": " + v);
+      const span = document.createElement("span");
+      span.textContent = v;
+      lab.append(inp, span);
+      scale.append(lab);
+    }
+    const ends = document.createElement("div");
+    ends.className = "ends"; ends.setAttribute("aria-hidden", "true");
+    ends.innerHTML = "<span>1 = I'm not very good</span><span>10 = I'm very good</span>";
+    fs.append(lg, scale, ends);
+    host.append(fs);
+  }
+}
+render(items.filter(i => i.code[0] === "A"), "partA");
+render(items.filter(i => i.code[0] === "B"), "partB");
+
+const form = document.getElementById("alass");
+const answer = code => {
+  const el = form.querySelector(`input[name="${code}"]:checked`);
+  return el ? Number(el.value) : null;
+};
+function updateProgress() {
+  const n = items.filter(i => answer(i.code) !== null).length;
+  document.getElementById("progress").textContent = `${n} of ${items.length} items answered.`;
+}
+form.addEventListener("change", updateProgress);
+updateProgress();
+
+const SCORES = [["Childhood Language (CL)", i => i.scale === "CL"], ["Language Performance (LP)", i => i.scale === "LP"],
+  ["Social Use of Language (SUL)", i => i.scale === "SUL"], ["ALASS total", () => true]];
+
+form.addEventListener("submit", ev => {
+  ev.preventDefault();
+  const rows = document.getElementById("scoreRows");
+  rows.innerHTML = "";
+  for (const [label, pick] of SCORES) {
+    const set = items.filter(pick);
+    const vals = set.map(i => answer(i.code)).filter(v => v !== null);
+    const mean = vals.length ? vals.reduce((a, b) => a + b, 0) / vals.length : null;
+    const tr = document.createElement("tr");
+    const pct = mean === null ? 0 : ((mean - 1) / 9) * 100;
+    tr.innerHTML = `<td>${label}</td><td class="num">${mean === null ? "–" : mean.toFixed(2)}</td>` +
+      `<td aria-hidden="true"><div class="bar"><i style="width:${pct}%"></i></div></td>` +
+      `<td class="num">${vals.length} of ${set.length}</td>`;
+    rows.append(tr);
+  }
+  const res = document.getElementById("results");
+  res.hidden = false;
+  res.scrollIntoView({ behavior: "smooth", block: "start" });
+});
+
+form.addEventListener("reset", () => {
+  setTimeout(() => { updateProgress(); document.getElementById("results").hidden = true; }, 0);
+});
+
+document.getElementById("download").addEventListener("click", () => {
+  const q = s => '"' + String(s).replace(/"/g, '""') + '"';
+  const lines = ["code,subscale,item,response"].concat(
+    items.map(i => [i.code, i.scale, q(i.text), answer(i.code) ?? ""].join(",")));
+  const blob = new Blob([lines.join("\n") + "\n"], { type: "text/csv" });
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = "ALASS_answers.csv";
+  document.body.append(a); a.click(); a.remove();
+  setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+});
+</script>
+</body>
+</html>
